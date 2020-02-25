@@ -161,3 +161,73 @@
     head_img varchar(128) // 记录这个头像的路径
   )
 ```
+## 5.9 创建一个员工表(课堂练习/评讲), 选用适当的数据类型,添加2条数据，然后通过php来网页中显示。
+### sql语句
+```sql
+    create table `worker`(
+        id int not null default 1 comment 'id号',
+        name varchar(64) not null default '' comment '姓名',
+        sex enum('男','女','保密') not null default '保密' comment '性别',
+        brithday date not null default '1997-08-11' comment '生日',
+        entry_date date not null comment '入职时间',
+        job varchar(64) not null comment '工作',
+        salary decimal(10,2) not null comment '薪水',
+        resume text not null comment '介绍'
+    ) charset=utf8 engine=myisam;
+    // 插入数据
+    insert into `worker` values(1,'liuvanl',1,'1999-09-09','2019-09-09','前端工程师',234567.87,'欢迎来到我的世界');
+    insert into `worker` values(2,'liufan',2,'1999-12-18','2015-08-07','ui设计师',567334.98,'我是UI设计师');
+```
+### php文件
+```php
+  <?php
+    header('content-type:text/html;charset=utf-8');
+    // 连接数据库
+    $query_link = @mysql_connect('localhost','root','');
+    if(!$query_link){
+        echo '数据库链接失败';
+        exit;
+    }
+    // 选择数据库
+   $sele_db =  mysql_select_db('phpstudy');
+    if(!$sele_db){
+        echo '选择数据库失败';
+        exit;
+    }
+    // 设置编码
+    mysql_query('set names utf8');
+    // 查询语句
+    $sql = "select * from `worker`";
+    // 解析语句
+    $res = mysql_query($sql);
+    // 用于存放数据的数组
+    $rows = array();
+    while($row = mysql_fetch_assoc($res)){
+       $rows[] = $row;
+    }
+?>
+<table border="1" width="800" style="text-align: center;">
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>sex</th>
+        <th>brithday</th>
+        <th>entry_date</th>
+        <th>job</th>
+        <th>salary</th>
+        <th>resume</th>
+    </tr>
+    <?php foreach($rows as $k): ?>
+    <tr>        
+        <td><?php echo $k['id']; ?></td>
+        <td><?php echo $k['name']; ?></td>
+        <td><?php echo $k['sex']; ?></td>
+        <td><?php echo $k['brithday']; ?></td>
+        <td><?php echo $k['entry_date']; ?></td>
+        <td><?php echo $k['job']; ?></td>
+        <td><?php echo $k['salary']; ?></td>
+        <td><?php echo $k['resume']; ?></td>
+    </tr>
+    <?php endforeach;?>
+</table>
+```
