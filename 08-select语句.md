@@ -138,3 +138,51 @@
   4. 统计一个班级语文成绩平均分
   select round(sum(chainese_grade) / count(*),2) as avg from student;
 ```
+## 8.9 聚合函数-avg
+### 基本介绍
+> avg函数返回满足where条件的列平均值
+### 基本语法
+```sql
+  select avg(列名) from tablename
+        where where_definition
+```
+### 案例说明
+```sql
+  1. 求一个班级数学平均分
+  select round(avg(math_grade),2) from student;
+  2. 求一个班级总分平均分
+  select round(avg(ifnull(chainese_grade,0.0)+ifnull(math_grade,0.0)+ifnull(english_grade,0.0)),2) from student;
+```
+## 8.10 聚合函数-max/min
+### 基本介绍
+> 返回满足where条件的列最大值/最小值
+### 基本语法
+```sql
+  select max(列名) from tablename
+         where where_definition
+```
+### 案例说明
+```sql
+  1.求班级最高分和最低分
+  select max(chainese_grade+math_grade+english_grade) as max_grade from student;
+  select min(chainese_grade+math_grade+english_grade) as max_grade from student;
+```
+## 8.11 group by 子句
+### 基本介绍
+> group by就是对数据（列）进行分组统计；如果我们需要对分组的结果进行过滤则可以使用关键字having
+### 基本语法
+```sql
+  select column1,colunm2,column3 from tablename
+          group by column
+  select colunm1,colunm2,column3 from tablename
+          group by column having
+```
+### 案例说明
+```sql
+  1. 如何显示每个部门的平均工资和最高工资
+  select deptno,max(sal),round(avg(sal),2) from emp group by deptno;
+  2. 显示每个部门的每种岗位的平均工资和最低工资
+  select deptno,job,min(sal),round(avg(sal),2) from emp group by deptno,job;
+  3. 显示平均工资低于2000的部门号和它的平均工资
+  select avg(sal) as my_avg,deptno from emp group by deptno having my_avg < 2000;
+```
