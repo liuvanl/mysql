@@ -151,3 +151,72 @@
   select * from emp where logincount = 1;
 ```
 4. 不会出现在where子句中字段不该创建索引
+## 15.6 索引练习题
+1. 创建一张订单表order(id号，商品名，订购人，数量)要求id号为主键，请使用三种方式来创建主键（为练习方便，可以是order1,order2,order3）
+```sql
+  ## 第一种方式
+  create table `order1`(
+	  id int primary key,
+	  goods_name varchar(128) not null default '',
+	  orderer varchar(64) not null default '',
+	  order_count smallint not null default 1
+  )charset=utf8 engine=myisam;
+  ## 第二种方式
+  create table `order2`(
+	  id int,
+	  goods_name varchar(128) not null default '',
+	  orderer varchar(64) not null default '',
+	  order_count smallint not null default 1,
+	  primary key(id)
+  )charset=utf8 engine=myisam;
+  ## 第三种方式
+  create table `order3`(
+	  id int,
+  	goods_name varchar(128) not null default '',
+	  orderer varchar(64) not null default '',
+	  order_count tinyint not null default 1
+  )charset=utf8 engine=myisam;
+
+  alter table `order3` add primary key(id);
+```
+2. 创建一张特价菜谱表menu(id号,菜谱名，厨师，点餐人身份证，价格)，要求id为主键，点餐人身份证为unique，请用两种方式创建
+```sql
+  create table `menu1`(
+	  id int not null primary key auto_increment,
+	  foods_name varchar(64) not null default '',
+	  cooker varchar(64) not null default '',
+	  care_id varchar(18) unique not null
+  )charset=utf8 engine=myisam;
+  
+  create table `menu2`(
+	  id int not null primary key auto_increment,
+	  foods_name varchar(64) not null default '',
+	  cooker varchar(64) not null default '',
+	  care_id varchar(18),
+	  unique(care_id)
+  )charset=utf8 engine=myisam;
+```
+3. 创建一张运动员表sportman（id号，名字，特长）要求id号为主键，名字为普通索引，请使用三种方式来创建索引（提示：为练习方便，可以是sportman1,sportman2,sportman3）
+```sql
+  ## 第一种方式
+  create table `sportman`(
+	  id int not null primary key auto_increment,
+	  name varchar(64) not null default '',
+	  hobby varchar(64) not null default '',
+	  index(name)
+  )charset=utf8 engine=myisam;
+  ## 第二种方式
+  create table `sportman2`(
+    id int not null primary key auto_increment,
+    name varchar(64) not null default '',
+    hobby varchar(64) not null default ''
+  )charset=utf8 engine=myisam;
+  alter table `sportman2` add index(name);
+  ## 第三种方式
+  create table `sportman3`(
+	  id int not null primary key auto_increment,
+	  name varchar(64) not null default '',
+	  hobby varchar(64) not null default ''
+  )charset=utf8 engine=myisam;
+  create index inx_name on sportman3(name);
+```
