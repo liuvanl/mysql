@@ -16,7 +16,7 @@
 ## 19.3 mysql用户删除
 + 基本语法
 > drop user '用户名'@'主机名';
-## 19.4 mysql用户删除
+## 19.4 mysql用户修改密码
 + 修改自己的密码
 ```sql
   set password = password('密码');
